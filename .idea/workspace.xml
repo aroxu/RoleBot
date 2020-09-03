@@ -33,6 +33,9 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
@@ -82,21 +85,21 @@
       <screen x="0" y="25" width="1680" height="977" />
     </state>
     <state x="547" y="320" key="#com.intellij.fileTypes.FileTypeChooser/0.25.1680.977@0.25.1680.977" timestamp="1599126420141" />
-    <state width="1638" height="262" key="GridCell.Tab.0.bottom" timestamp="1599126042559">
+    <state width="1638" height="262" key="GridCell.Tab.0.bottom" timestamp="1599127027496">
       <screen x="0" y="25" width="1680" height="977" />
     </state>
-    <state width="1638" height="262" key="GridCell.Tab.0.bottom/0.25.1680.977@0.25.1680.977" timestamp="1599126042559" />
-    <state width="1638" height="262" key="GridCell.Tab.0.center" timestamp="1599126042557">
+    <state width="1638" height="262" key="GridCell.Tab.0.bottom/0.25.1680.977@0.25.1680.977" timestamp="1599127027496" />
+    <state width="1638" height="262" key="GridCell.Tab.0.center" timestamp="1599127027495">
       <screen x="0" y="25" width="1680" height="977" />
     </state>
-    <state width="1638" height="262" key="GridCell.Tab.0.center/0.25.1680.977@0.25.1680.977" timestamp="1599126042557" />
-    <state width="1638" height="262" key="GridCell.Tab.0.left" timestamp="1599126042555">
+    <state width="1638" height="262" key="GridCell.Tab.0.center/0.25.1680.977@0.25.1680.977" timestamp="1599127027495" />
+    <state width="1638" height="262" key="GridCell.Tab.0.left" timestamp="1599127027495">
       <screen x="0" y="25" width="1680" height="977" />
     </state>
-    <state width="1638" height="262" key="GridCell.Tab.0.left/0.25.1680.977@0.25.1680.977" timestamp="1599126042555" />
-    <state width="1638" height="262" key="GridCell.Tab.0.right" timestamp="1599126042558">
+    <state width="1638" height="262" key="GridCell.Tab.0.left/0.25.1680.977@0.25.1680.977" timestamp="1599127027495" />
+    <state width="1638" height="262" key="GridCell.Tab.0.right" timestamp="1599127027495">
       <screen x="0" y="25" width="1680" height="977" />
     </state>
-    <state width="1638" height="262" key="GridCell.Tab.0.right/0.25.1680.977@0.25.1680.977" timestamp="1599126042558" />
+    <state width="1638" height="262" key="GridCell.Tab.0.right/0.25.1680.977@0.25.1680.977" timestamp="1599127027495" />
   </component>
 </project>

@@ -42,7 +42,7 @@ func run(ctx handler.CommandContext) error {
 	var requestedRoles []string
 
 	for _, tempForBlankIncludedRoleNames := range role {
-		requestedRoles = append(requestedRoles, strings.ReplaceAll(tempForBlankIncludedRoleNames, "[]", " "))
+		requestedRoles = append(requestedRoles, strings.ReplaceAll(tempForBlankIncludedRoleNames, "_", " "))
 	}
 
 	for _, requestedRole := range requestedRoles {
@@ -64,6 +64,6 @@ func run(ctx handler.CommandContext) error {
 		}
 	}
 
-	ctx.Message.Reply("혹시 박탈되지 않은 역할이 있다면, 공백은 ``[]``로 변경하고 다시 시도해주세요.")
+	ctx.Message.Reply("혹시 박탈되지 않은 역할이 있다면, 공백은 ``_``로 변경하고 다시 시도해주세요.")
 	return nil
 }

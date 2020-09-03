@@ -7,7 +7,7 @@ import (
 )
 
 //LoadConfig get rawConfig string and returns error, prefix, token
-func LoadConfig(rawConfig string) (errLoadFailed error, prefix string, token string) {
+func loadConfig(rawConfig string) (errLoadFailed error, prefix string, token string) {
 	var config structure.Config
 	_, err := toml.Decode(rawConfig, &config)
 	if err != nil {
@@ -15,4 +15,16 @@ func LoadConfig(rawConfig string) (errLoadFailed error, prefix string, token str
 		return err, "", ""
 	}
 	return nil, config.Prefix, config.Token
+}
+
+//GetToken returns token
+func GetToken(rawConfig string) (err error, token string) {
+	err, _, token = loadConfig(rawConfig)
+	return err, token
+}
+
+//GetPrefix returns token
+func GetPrefix(rawConfig string) (err error, prefix string) {
+	err, prefix, _ = loadConfig(rawConfig)
+	return err, prefix
 }

@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/B1ackAnge1/RoleBot/structure"
+	"B1ackAnge1/RoleBot/structure"
 	"github.com/BurntSushi/toml"
 	"log"
 )

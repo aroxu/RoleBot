@@ -1,8 +1,9 @@
 package initializer
 
 import (
-	"github.com/B1ackAnge1/RoleBot/commands/general/ping"
-	"github.com/B1ackAnge1/RoleBot/handler"
+	"B1ackAnge1/RoleBot/commands/general/help"
+	"B1ackAnge1/RoleBot/commands/general/ping"
+	"B1ackAnge1/RoleBot/handler"
 )
 
 //InitCommands inits command structures
@@ -11,4 +12,5 @@ func InitCommands() {
 	handler.InitCommands()
 	// register commands
 	ping.Initialize()
+	help.Initialize()
 }

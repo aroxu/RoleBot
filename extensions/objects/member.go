@@ -1,7 +1,7 @@
 package objects
 
 import (
-	"github.com/B1ackAnge1/RoleBot/extensions/permissions"
+	"B1ackAnge1/RoleBot/extensions/permissions"
 	"github.com/bwmarrin/discordgo"
 )
 

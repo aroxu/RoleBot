@@ -1,10 +1,10 @@
 package main
 
 import (
+	"B1ackAnge1/RoleBot/events"
+	"B1ackAnge1/RoleBot/initializer"
+	"B1ackAnge1/RoleBot/utils"
 	"fmt"
-	"github.com/B1ackAnge1/RoleBot/events"
-	"github.com/B1ackAnge1/RoleBot/initializer"
-	"github.com/B1ackAnge1/RoleBot/utils"
 	"github.com/bwmarrin/discordgo"
 	"io/ioutil"
 	"log"

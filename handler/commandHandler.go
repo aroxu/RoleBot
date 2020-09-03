@@ -1,8 +1,8 @@
 package handler
 
 import (
+	"B1ackAnge1/RoleBot/extensions/objects"
 	"fmt"
-	"github.com/B1ackAnge1/RoleBot/extensions/objects"
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
@@ -24,10 +24,10 @@ type CommandContext struct {
 }
 
 type Command struct {
-	Run                         func(ctx CommandContext) error
-	Names                       []string
-	ExpectedPositionalArguments []string
-	KeywordArgumentAliases      map[string]string
+	Run                  func(ctx CommandContext) error
+	Names                []string
+	RequiredArgumentType []string
+	Usage                map[string]string
 }
 
 // Initialize the Commands map
@@ -73,8 +73,8 @@ func HandleCreatedMessage(session *discordgo.Session, message *discordgo.Message
 		Message: objects.ExtendMessage(message.Message, session),
 		Arguments: parseArguments(
 			message.Content,
-			command.ExpectedPositionalArguments,
-			command.KeywordArgumentAliases),
+			command.RequiredArgumentType,
+			command.Usage),
 	}
 
 	var err = command.Run(context)

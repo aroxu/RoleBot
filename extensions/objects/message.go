@@ -1,9 +1,9 @@
 package objects
 
 import (
+	"B1ackAnge1/RoleBot/extensions"
 	"errors"
 	"fmt"
-	"github.com/B1ackAnge1/RoleBot/extensions"
 	"github.com/bwmarrin/discordgo"
 )
 

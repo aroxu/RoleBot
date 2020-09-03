@@ -1,9 +1,9 @@
 package events
 
 import (
+	"B1ackAnge1/RoleBot/handler"
+	"B1ackAnge1/RoleBot/utils"
 	"fmt"
-	"github.com/B1ackAnge1/RoleBot/handler"
-	"github.com/B1ackAnge1/RoleBot/utils"
 	"github.com/bwmarrin/discordgo"
 	"io/ioutil"
 )

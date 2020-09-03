@@ -1,4 +1,4 @@
-module github.com/B1ackAnge1/RoleBot
+module B1ackAnge1/RoleBot
 
 go 1.15
 

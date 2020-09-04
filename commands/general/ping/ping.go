@@ -8,7 +8,7 @@ func Initialize() {
 			Run:                  run,
 			Names:                []string{"ping"},
 			RequiredArgumentType: []string{commandArg},
-			Usage:                map[string]string{"설명":"봇이 살아있나 확인합니다.", "사용법": "```css\n?!ping```"},
+			Usage:                map[string]string{"필요한 권한":"**``없음``**", "설명":"``봇이 살아있나 확인합니다.``", "사용법": "```css\n?!ping```"},
 		},
 	)
 }

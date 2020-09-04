@@ -44,7 +44,7 @@ func AddCommand(command Command) {
 
 // Handle a message creation event
 func HandleCreatedMessage(session *discordgo.Session, message *discordgo.MessageCreate, prefix string) {
-	if message.Author.ID == session.State.User.ID {
+	if message.Author.ID == session.State.User.ID || message.Author.Bot {
 		return
 	}
 	if !strings.HasPrefix(message.Content, prefix) {

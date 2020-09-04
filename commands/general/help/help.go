@@ -12,7 +12,7 @@ func Initialize() {
 			Run:                  run,
 			Names:                []string{"help"},
 			RequiredArgumentType: []string{commandArg},
-			Usage:                map[string]string{"설명":"`모든 명령어의 도움말을 표시합니다.`", "사용법": "```css\n?!help 명령어```"},
+			Usage:                map[string]string{"필요한 권한":"**``없음``**", "설명":"``모든 명령어의 도움말을 표시합니다.``", "사용법": "```css\n?!help 명령어```"},
 		},
 	)
 }

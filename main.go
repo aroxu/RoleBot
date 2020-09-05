@@ -2,6 +2,7 @@ package main
 
 import (
 	"B1ackAnge1/RoleBot/events"
+	"B1ackAnge1/RoleBot/handler"
 	"B1ackAnge1/RoleBot/initializer"
 	"B1ackAnge1/RoleBot/utils"
 	"github.com/bwmarrin/discordgo"
@@ -49,8 +50,9 @@ func main() {
 	select {}
 }
 
-func checkTimeForVote(s *discordgo.Session) {
+func checkTimeForVote(session *discordgo.Session) {
 	for {
-		time.Sleep(time.Minute)
+		time.Sleep(time.Second)
+		go handler.VoteTimeOverHandler(session)
 	}
 }

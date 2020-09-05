@@ -10,23 +10,31 @@ import (
 )
 
 func ConfirmHandler(session *discordgo.Session, message *discordgo.Message, event *discordgo.MessageReactionAdd) {
+	originalMessage := message.Content
+	userMsgPattern := regexp.MustCompile(`([0-9])\w+`)
+	targetMessage := userMsgPattern.FindString(originalMessage)
+	requester, errFailedFindUser := session.User(targetMessage)
 
+	if errFailedFindUser != nil {
+		session.ChannelMessageSend(message.ChannelID, errFailedFindUser.Error())
+		return
+	}
 	for _, reaction := range message.Reactions {
 		if reaction.Emoji.Name != event.Emoji.Name {
-			if event.Emoji.Name == "❌" {
-				session.MessageReactionsRemoveAll(message.ChannelID, message.ID)
-				cancelMessage, _ := session.ChannelMessageEdit(message.ChannelID, message.ID, "❌ 사용자에 의해 취소되었습니다.")
-				time.Sleep(time.Second * 10)
-				session.ChannelMessageDelete(cancelMessage.ChannelID, cancelMessage.ID)
+			if event.UserID == requester.ID {
+				if event.Emoji.Name == "❌" {
+					session.MessageReactionsRemoveAll(message.ChannelID, message.ID)
+					cancelMessage, _ := session.ChannelMessageEdit(message.ChannelID, message.ID, "❌ 사용자에 의해 취소되었습니다.")
+					time.Sleep(time.Second * 10)
+					session.ChannelMessageDelete(cancelMessage.ChannelID, cancelMessage.ID)
+					return
+				}
+			} else {
 				return
 			}
 		}
 	}
 
-	originalMessage := message.Content
-	userMsgPattern := regexp.MustCompile(`([0-9])\w+`)
-
-	targetMessage := userMsgPattern.FindString(originalMessage)
 	rolesMsgString := strings.Split(originalMessage, "឵")[1]
 
 	tempStr := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(rolesMsgString, "|", ""), "*", ""), "`", "")
@@ -34,13 +42,15 @@ func ConfirmHandler(session *discordgo.Session, message *discordgo.Message, even
 
 	for _, currentRole := range roles {
 
-		requester, errFailedFindUser := session.User(targetMessage)
-		if errFailedFindUser != nil {
-			session.ChannelMessageSend(message.ChannelID, errFailedFindUser.Error())
-			return
-		}
-
 		session.ChannelMessageDelete(message.ChannelID, message.ID)
+
+		startDate := time.Now().UTC().Format("02-Jan-2006 15:04:05")
+		startDateStrTemp, _ := time.Parse("02-Jan-2006 15:04:05", startDate)
+		startDateStr := startDateStrTemp.UTC().Format("2006-01-02 15:04:05")
+
+		endDate := time.Now().UTC().Add(24 * time.Hour).Format("02-Jan-2006 15:04:05")
+		endDateStrTemp, _ := time.Parse("02-Jan-2006 15:04:05", endDate)
+		endDateStr := endDateStrTemp.UTC().Format("2006-01-02 15:04:05")
 
 		embed := discordgo.MessageEmbed{
 			Author: &discordgo.MessageEmbedAuthor{},
@@ -48,9 +58,8 @@ func ConfirmHandler(session *discordgo.Session, message *discordgo.Message, even
 			Title:  "✅ 역할 신청 투표 개최됨",
 			Fields: []*discordgo.MessageEmbedField{},
 			Footer: &discordgo.MessageEmbedFooter{
-				Text: "개최일 ",
+				Text: "개최일: UTC " + startDateStr + " | 마감일: UTC " + endDateStr,
 			},
-			Timestamp: time.Now().Format(time.RFC3339),
 		}
 
 		embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
@@ -72,17 +81,19 @@ func ConfirmHandler(session *discordgo.Session, message *discordgo.Message, even
 		}
 
 		rankVoteData := model.Vote{
-			ID: message.ID,
-			StartDate: time.Now().Format(time.RFC3339),
-			EndDate: time.Now().Add(24*time.Hour).Format(time.RFC3339),
-			Agree: 0,
-			Disagree: 0,
-			VoteType: "rank",
-			Data: strings.ReplaceAll(currentRole, "|", ""),
+			ID:        confirmMessage.ID,
+			Requester: requester.ID,
+			GuildID:   event.GuildID,
+			ChannelID: confirmMessage.ChannelID,
+			StartDate: startDate,
+			EndDate:   endDate,
+			Agree:     0,
+			Disagree:  0,
+			VoteType:  "rank",
+			Data:      strings.ReplaceAll(currentRole, "|", ""),
 		}
 
 		utils.GetDB().Create(&rankVoteData)
-
 
 		session.MessageReactionAdd(confirmMessage.ChannelID, confirmMessage.ID, "⭕")
 		session.MessageReactionAdd(confirmMessage.ChannelID, confirmMessage.ID, "❌")

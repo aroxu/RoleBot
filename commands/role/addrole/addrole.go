@@ -1,7 +1,9 @@
 package addrole
 
 import (
+	"B1ackAnge1/RoleBot/extensions/permissions"
 	"B1ackAnge1/RoleBot/handler"
+	"B1ackAnge1/RoleBot/utils"
 	"strings"
 )
 
@@ -22,13 +24,20 @@ const (
 )
 
 func run(ctx handler.CommandContext) error {
+	checkPermissionResult, _ := utils.MemberHasPermission(ctx.Session, ctx.Message.GuildID, ctx.Message.Author.ID, permissions.ADMINISTRATOR)
+
+	if !checkPermissionResult {
+		ctx.Message.Reply("❌ 이 명령어를 실행하기 위해서는 관리자 권한이 필요합니다.")
+		return nil
+	}
+
 	if len(ctx.Arguments[target]) == 0 {
-		ctx.Message.Reply("부여할 대상을 기재하시고 다시 시도해주세요.")
+		ctx.Message.Reply("❌ 부여할 대상을 기재하시고 다시 시도해주세요.")
 		return nil
 	}
 
 	if len(ctx.Arguments[roles]) == 0 {
-		ctx.Message.Reply("부여할 역할을 기재하시고 다시 시도해주세요.")
+		ctx.Message.Reply("❌ 부여할 역할을 기재하시고 다시 시도해주세요.")
 		return nil
 	}
 
@@ -55,15 +64,15 @@ func run(ctx handler.CommandContext) error {
 	}
 	resultRolesToString = strings.TrimSuffix(resultRolesToString, ", ")
 
-	ctx.Message.Reply("다음 역할(들)을 찾고 추가하는 중입니다: " + resultRolesToString)
+	ctx.Message.Reply("🔎 다음 역할(들)을 찾고 추가하는 중입니다: " + resultRolesToString)
 
 	for _, roleToAdd := range resultRoles {
 		errAddRole := ctx.Session.GuildMemberRoleAdd(guild, target, roleToAdd)
 		if errAddRole != nil {
-			ctx.Message.Reply("다음 역할을 추가할 수 없습니다: ```json\n" + errAddRole.Error() + "```")
+			ctx.Message.Reply("❌ 다음 역할을 추가할 수 없습니다: ```json\n" + errAddRole.Error() + "```")
 		}
 	}
 
-	ctx.Message.Reply("혹시 추가되지 않은 역할이 있다면, 공백은 ``_``로 변경하고 다시 시도해주세요.")
+	ctx.Message.Reply("ℹ️ 혹시 추가되지 않은 역할이 있다면, 공백은 ``_``로 변경하고 다시 시도해주세요.")
 	return nil
 }

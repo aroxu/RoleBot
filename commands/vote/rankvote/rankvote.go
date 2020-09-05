@@ -58,7 +58,7 @@ func run(ctx handler.CommandContext) error {
 		ctx.Session.ChannelMessageEdit(findingRoleMsg.ChannelID, findingRoleMsg.ID, ">>> ❌ 신청한 역할중 찾을 수 있는 역할이 없습니다. 요청을 기각합니다.\n만약 역할 이름에 공백이 포함되어 있다면, 공백은 ``_``로 변경하고 다시 시도해주세요.")
 		return nil
 	} else {
-		confirmMsg, _ := ctx.Session.ChannelMessageEdit(findingRoleMsg.ChannelID, findingRoleMsg.ID, ">>> ✅ 다음 역할들을 찾았습니다: "+resultRolesToString+"\n⚠️ 혹시 추가되지 않은 역할이 있다면, 공백은 ``_``로 변경하고 다시 시도해주세요.\nℹ️ 계속 진행하려면 ⭕, 요청을 취하하라면 ❌ 이모티콘을 추가해주세요.\n이 메세지의 반응은 신청자에게만 유효합니다.\n\n||신청자: " + requester.User.ID + "\n" + "신청한 역할: ឵" + resultRolesToString + "||")
+		confirmMsg, _ := ctx.Session.ChannelMessageEdit(findingRoleMsg.ChannelID, findingRoleMsg.ID, ">>> ✅ 다음 역할들을 찾았습니다: "+resultRolesToString+"\n⚠️ 혹시 추가되지 않은 역할이 있다면, 공백은 ``_``로 변경하고 다시 시도해주세요.\nℹ️ 계속 진행하려면 ⭕, 요청을 취하하라면 ❌ 이모티콘을 추가해주세요.\n이 메세지의 반응은 신청자에게만 유효합니다.\n\n||신청자: "+requester.User.ID+"\n"+"신청한 역할: ឵"+resultRolesToString+"||")
 		ctx.Session.MessageReactionAdd(confirmMsg.ChannelID, confirmMsg.ID, "⭕")
 		ctx.Session.MessageReactionAdd(confirmMsg.ChannelID, confirmMsg.ID, "❌")
 		time.Sleep(time.Second * 30)

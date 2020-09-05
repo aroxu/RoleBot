@@ -1,12 +1,24 @@
 package events
 
 import (
+	"B1ackAnge1/RoleBot/utils"
+	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"io/ioutil"
 	"log"
 )
 
 func Ready(session *discordgo.Session, event *discordgo.Ready) {
-	var err = session.UpdateStatus(0, "golang")
+	rawConfig, errFindConfigFile := ioutil.ReadFile("config.toml") // just pass the file name
+	if errFindConfigFile != nil {
+		fmt.Println("Error while load config file: " + errFindConfigFile.Error())
+		return
+	}
+	errLoadConfigData, prefix := utils.GetPrefix(string(rawConfig))
+	if  errLoadConfigData != nil {
+		fmt.Println("Error while load config data: " + errLoadConfigData.Error())
+	}
+	var err = session.UpdateStatus(0, prefix + "help")
 	if err != nil {
 		log.Println("Error updating status: ", err)
 	}

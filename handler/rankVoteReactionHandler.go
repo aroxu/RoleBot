@@ -1,40 +1,48 @@
 package handler
 
 import (
+	"B1ackAnge1/RoleBot/model"
+	"B1ackAnge1/RoleBot/utils"
 	"github.com/bwmarrin/discordgo"
-	"log"
 	"strconv"
-	"strings"
-	"time"
 )
 
 func RankVoteReactionAddHandler(session *discordgo.Session, message *discordgo.Message, event *discordgo.MessageReactionAdd) {
+	type AgreeAndDisagreeData struct {
+		Agree      int
+		Disagree   int
+	}
+
+	var agree int
+	var disagree int
+
+	var agreeAndDisagreeData AgreeAndDisagreeData
+
+	utils.GetDB().Raw("SELECT agree, disagree FROM votes WHERE id = ?", message.ID).Scan(&agreeAndDisagreeData)
+
+	agree = agreeAndDisagreeData.Agree
+	disagree = agreeAndDisagreeData.Disagree
+
 	for _, reaction := range message.Reactions {
 		if reaction.Emoji.Name != event.Emoji.Name {
-
-			embed := discordgo.MessageEmbed{
-				Author: &discordgo.MessageEmbedAuthor{},
-				Color:  39423,
-				Title:  "✅ 역할 신청 투표 개최됨",
-				Fields: []*discordgo.MessageEmbedField{},
-				Footer: &discordgo.MessageEmbedFooter{
-					Text: "개최일 ",
-				},
-				Timestamp: time.Now().Format(time.RFC3339),
-			}
+			var embed discordgo.MessageEmbed
 
 			if event.Emoji.Name == "⭕" {
+				agree++
+				utils.GetDB().Model(&model.Vote{}).Where("id = ?", message.ID).Update("agree", agree)
 				for _, origin := range message.Embeds {
+					embed = discordgo.MessageEmbed{
+						Author: &discordgo.MessageEmbedAuthor{},
+						Color:  39423,
+						Title:  "✅ 역할 신청 투표 개최됨",
+						Fields: []*discordgo.MessageEmbedField{},
+						Footer: &discordgo.MessageEmbedFooter{
+							Text: origin.Footer.Text,
+						},
+					}
 					for _, field := range origin.Fields {
-						log.Println(field.Value)
 						if field.Name == "📊 투표 현황" {
 							//찬성: **``0표``**, 반대: **``0표``**
-							currentResultToString := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(field.Value, "찬성: ", ""), "반대: ", ""), "*", ""), "`", ""), "표", ""), " ", "")
-
-							currentResult := strings.Split(currentResultToString, ",")
-							agree, _ := strconv.Atoi(currentResult[0])
-							disagree, _ := strconv.Atoi(currentResult[1])
-							agree++
 
 							embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
 								Name:   field.Name,
@@ -59,17 +67,21 @@ func RankVoteReactionAddHandler(session *discordgo.Session, message *discordgo.M
 				}
 				return
 			} else if event.Emoji.Name == "❌" {
+				disagree++
+				utils.GetDB().Model(&model.Vote{}).Where("id = ?", message.ID).Update("disagree", disagree)
 				for _, origin := range message.Embeds {
+					embed = discordgo.MessageEmbed{
+						Author: &discordgo.MessageEmbedAuthor{},
+						Color:  39423,
+						Title:  "✅ 역할 신청 투표 개최됨",
+						Fields: []*discordgo.MessageEmbedField{},
+						Footer: &discordgo.MessageEmbedFooter{
+							Text: origin.Footer.Text,
+						},
+					}
 					for _, field := range origin.Fields {
-						log.Println(field.Value)
 						if field.Name == "📊 투표 현황" {
 							//찬성: **``0표``**, 반대: **``0표``**
-							currentResultToString := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(field.Value, "찬성: ", ""), "반대: ", ""), "*", ""), "`", ""), "표", ""), " ", "")
-
-							currentResult := strings.Split(currentResultToString, ",")
-							agree, _ := strconv.Atoi(currentResult[0])
-							disagree, _ := strconv.Atoi(currentResult[1])
-							disagree++
 
 							embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
 								Name:   field.Name,
@@ -99,31 +111,41 @@ func RankVoteReactionAddHandler(session *discordgo.Session, message *discordgo.M
 }
 
 func RankVoteReactionRemoveHandler(session *discordgo.Session, message *discordgo.Message, event *discordgo.MessageReactionRemove) {
+	type AgreeAndDisagreeData struct {
+		Agree      int
+		Disagree   int
+	}
+
+	var agree int
+	var disagree int
+
+	var agreeAndDisagreeData AgreeAndDisagreeData
+
+	utils.GetDB().Raw("SELECT agree, disagree FROM votes WHERE id = ?", message.ID).Scan(&agreeAndDisagreeData)
+
+	agree = agreeAndDisagreeData.Agree
+	disagree = agreeAndDisagreeData.Disagree
+
 	for _, reaction := range message.Reactions {
 		if reaction.Emoji.Name != event.Emoji.Name {
-
-			embed := discordgo.MessageEmbed{
-				Author: &discordgo.MessageEmbedAuthor{},
-				Color:  39423,
-				Title:  "✅ 역할 신청 투표 개최됨",
-				Fields: []*discordgo.MessageEmbedField{},
-				Footer: &discordgo.MessageEmbedFooter{
-					Text: "개최일 ",
-				},
-				Timestamp: time.Now().Format(time.RFC3339),
-			}
+			var embed discordgo.MessageEmbed
 
 			if event.Emoji.Name == "⭕" {
+				agree--
+				utils.GetDB().Model(&model.Vote{}).Where("id = ?", message.ID).Update("agree", agree)
 				for _, origin := range message.Embeds {
+					embed = discordgo.MessageEmbed{
+						Author: &discordgo.MessageEmbedAuthor{},
+						Color:  39423,
+						Title:  "✅ 역할 신청 투표 개최됨",
+						Fields: []*discordgo.MessageEmbedField{},
+						Footer: &discordgo.MessageEmbedFooter{
+							Text: origin.Footer.Text,
+						},
+					}
 					for _, field := range origin.Fields {
 						if field.Name == "📊 투표 현황" {
 							//찬성: **``0표``**, 반대: **``0표``**
-							currentResultToString := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(field.Value, "찬성: ", ""), "반대: ", ""), "*", ""), "`", ""), "표", ""), " ", "")
-
-							currentResult := strings.Split(currentResultToString, ",")
-							agree, _ := strconv.Atoi(currentResult[0])
-							disagree, _ := strconv.Atoi(currentResult[1])
-							agree--
 
 							embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
 								Name:   field.Name,
@@ -148,16 +170,21 @@ func RankVoteReactionRemoveHandler(session *discordgo.Session, message *discordg
 				}
 				return
 			} else if event.Emoji.Name == "❌" {
+				disagree--
+				utils.GetDB().Model(&model.Vote{}).Where("id = ?", message.ID).Update("disagree", disagree)
 				for _, origin := range message.Embeds {
+					embed = discordgo.MessageEmbed{
+						Author: &discordgo.MessageEmbedAuthor{},
+						Color:  39423,
+						Title:  "✅ 역할 신청 투표 개최됨",
+						Fields: []*discordgo.MessageEmbedField{},
+						Footer: &discordgo.MessageEmbedFooter{
+							Text: origin.Footer.Text,
+						},
+					}
 					for _, field := range origin.Fields {
 						if field.Name == "📊 투표 현황" {
 							//찬성: **``0표``**, 반대: **``0표``**
-							currentResultToString := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(field.Value, "찬성: ", ""), "반대: ", ""), "*", ""), "`", ""), "표", ""), " ", "")
-
-							currentResult := strings.Split(currentResultToString, ",")
-							agree, _ := strconv.Atoi(currentResult[0])
-							disagree, _ := strconv.Atoi(currentResult[1])
-							disagree--
 
 							embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
 								Name:   field.Name,

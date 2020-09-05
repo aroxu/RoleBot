@@ -1,6 +1,8 @@
 package ping
 
-import "B1ackAnge1/RoleBot/handler"
+import (
+	"B1ackAnge1/RoleBot/handler"
+)
 
 func Initialize() {
 	handler.AddCommand(

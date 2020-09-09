@@ -2,8 +2,9 @@ package utils
 
 import (
 	"B1ackAnge1/RoleBot/structure"
-	"github.com/BurntSushi/toml"
 	"log"
+
+	"github.com/BurntSushi/toml"
 )
 
 //LoadConfig get rawConfig string and returns error, prefix, token

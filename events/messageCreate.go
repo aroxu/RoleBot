@@ -4,8 +4,9 @@ import (
 	"B1ackAnge1/RoleBot/handler"
 	"B1ackAnge1/RoleBot/utils"
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"io/ioutil"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func MessageCreate(session *discordgo.Session, event *discordgo.MessageCreate) {
@@ -15,7 +16,7 @@ func MessageCreate(session *discordgo.Session, event *discordgo.MessageCreate) {
 		return
 	}
 	errLoadConfigData, prefix := utils.GetPrefix(string(rawConfig))
-	if  errLoadConfigData != nil {
+	if errLoadConfigData != nil {
 		fmt.Println("Error while load config data: " + errLoadConfigData.Error())
 	}
 	go handler.HandleCreatedMessage(session, event, prefix)

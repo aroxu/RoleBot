@@ -5,10 +5,11 @@ import (
 	"B1ackAnge1/RoleBot/handler"
 	"B1ackAnge1/RoleBot/initializer"
 	"B1ackAnge1/RoleBot/utils"
-	"github.com/bwmarrin/discordgo"
 	"io/ioutil"
 	"log"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 func main() {
@@ -24,7 +25,7 @@ func main() {
 		return
 	}
 	errLoadConfigData, token := utils.GetToken(string(rawConfig))
-	if  errLoadConfigData != nil {
+	if errLoadConfigData != nil {
 		log.Fatalln("Error while load config data: " + errLoadConfigData.Error())
 	}
 

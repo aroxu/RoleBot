@@ -8,6 +8,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/ztrue/tracerr"
 )
+
 const (
 	keywordArgumentPrefix = "--"
 	stringSeparator       = " "
@@ -58,8 +59,7 @@ func HandleCreatedMessage(session *discordgo.Session, message *discordgo.Message
 	if endIndex == -1 {
 		commandName = message.Content[len(prefix):]
 	} else {
-		commandName = message.Content[
-			len(prefix):strings.Index(message.Content, stringSeparator)]
+		commandName = message.Content[len(prefix):strings.Index(message.Content, stringSeparator)]
 	}
 
 	var command, exists = Commands[commandName]
@@ -129,26 +129,18 @@ func parseArguments(
 			}
 		} else {
 			if currentPosition >= len(expectedPositionalArguments) {
-				var _, exists = returnArguments[
-					expectedPositionalArguments[
-						len(expectedPositionalArguments)-1]]
+				var _, exists = returnArguments[expectedPositionalArguments[len(expectedPositionalArguments)-1]]
 				if exists {
 					// The length checks should prevent the value from being nil
 					//goland:noinspection GoNilness
-					returnArguments[
-						expectedPositionalArguments[
-							len(expectedPositionalArguments)-1]] += stringSeparator + currentItem
+					returnArguments[expectedPositionalArguments[len(expectedPositionalArguments)-1]] += stringSeparator + currentItem
 				} else {
 					//goland:noinspection GoNilness
-					returnArguments[
-						expectedPositionalArguments[
-							len(expectedPositionalArguments)-1]] = currentItem
+					returnArguments[expectedPositionalArguments[len(expectedPositionalArguments)-1]] = currentItem
 				}
 			} else {
 				//goland:noinspection GoNilness
-				returnArguments[
-					expectedPositionalArguments[
-						currentPosition]] = currentItem
+				returnArguments[expectedPositionalArguments[currentPosition]] = currentItem
 			}
 		}
 

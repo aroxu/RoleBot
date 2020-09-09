@@ -12,3 +12,4 @@ process.stderr.on('data', (content) => {
 })">>rolebot.js;
 pm2 start rolebot.js --name=RoleBot;
 pm2 save;
+pm2 startup;

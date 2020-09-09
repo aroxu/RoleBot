@@ -43,7 +43,12 @@ func run(ctx handler.CommandContext) error {
 	}
 
 	requester_ := strings.ReplaceAll(strings.ReplaceAll(ctx.Arguments[target], "<@!", ""), ">", "")
-	requester, _ := ctx.Session.User(requester_)
+	requester, errUserNotFound := ctx.Session.User(requester_)
+
+	if errUserNotFound != nil {
+		ctx.Message.Reply("❌ 대상자를 찾지 못했습니다.")
+		return nil
+	}
 
 	guild := ctx.Message.GuildID
 	serverRoles, _ := ctx.Session.GuildRoles(guild)
@@ -75,10 +80,10 @@ func run(ctx handler.CommandContext) error {
 		ctx.Session.ChannelMessageEdit(findingRoleMsg.ChannelID, findingRoleMsg.ID, ">>> ❌ 신청한 역할중 찾을 수 있는 역할이 없습니다. 요청을 기각합니다.\n만약 역할 이름에 공백이 포함되어 있다면, 공백은 ``_``로 변경하고 다시 시도해주세요.")
 		return nil
 	} else {
-		confirmMsg, _ := ctx.Session.ChannelMessageEdit(findingRoleMsg.ChannelID, findingRoleMsg.ID, ">>> ✅ 다음 역할들을 찾았습니다: "+resultRolesToString+"\n⚠️ 혹시 추가되지 않은 역할이 있다면, 공백은 ``_``로 변경하고 다시 시도해주세요.\nℹ️ 계속 진행하려면 ⭕, 요청을 취하하라면 ❌ 이모티콘을 추가해주세요.\n이 메세지의 반응은 신청자에게만 유효합니다.\n\n||신청자: "+requester.ID+"\n"+"신청한 역할: ឵"+resultRolesToString+"||")
+		confirmMsg, _ := ctx.Session.ChannelMessageEdit(findingRoleMsg.ChannelID, findingRoleMsg.ID, ">>> ✅ 다음 역할들을 찾았습니다: "+resultRolesToString+"\n⚠️ 혹시 추가되지 않은 역할이 있다면, 공백은 ``_``로 변경하고 다시 시도해주세요.\nℹ️ 계속 진행하려면 ⭕, 요청을 취하하려면 ❌ 이모티콘을 추가해주세요.\n이 메세지의 반응은 대상자에게만 1시간동안 유효합니다.\n\n||대상자: "+requester.ID+"\n"+"신청한 역할: ឵"+resultRolesToString+"||")
 		ctx.Session.MessageReactionAdd(confirmMsg.ChannelID, confirmMsg.ID, "⭕")
 		ctx.Session.MessageReactionAdd(confirmMsg.ChannelID, confirmMsg.ID, "❌")
-		time.Sleep(time.Second * 30)
+		time.Sleep(time.Hour * 1)
 		ctx.Session.MessageReactionsRemoveAll(confirmMsg.ChannelID, confirmMsg.ID)
 		ctx.Session.ChannelMessageEdit(confirmMsg.ChannelID, confirmMsg.ID, "❌ 요청시간이 만료되어 취하되었습니다.")
 		time.Sleep(time.Second * 10)

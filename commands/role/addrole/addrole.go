@@ -43,6 +43,12 @@ func run(ctx handler.CommandContext) error {
 
 	guild := ctx.Message.GuildID
 	target := strings.ReplaceAll(strings.ReplaceAll(ctx.Arguments[target], "<@!", ""), ">", "")
+	_, errUserNotFound := ctx.Session.User(target)
+
+	if errUserNotFound != nil {
+		ctx.Message.Reply("❌ 대상자를 찾지 못했습니다.")
+		return nil
+	}
 	role := strings.Fields(ctx.Arguments[roles])
 	serverRoles, _ := ctx.Session.GuildRoles(guild)
 

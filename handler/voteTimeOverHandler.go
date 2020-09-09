@@ -60,7 +60,7 @@ func VoteTimeOverHandler(session *discordgo.Session) {
 
 				embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
 					Name:   "역할 신청 투표가 마감되었습니다.",
-					Value:  "신청자: " + requester.Mention() + "\n신청한 역할: **``" + strings.ReplaceAll(result.Data, "|", "") + "``**",
+					Value:  "대상자: " + requester.Mention() + "\n신청한 역할: **``" + strings.ReplaceAll(result.Data, "|", "") + "``**",
 					Inline: true,
 				})
 
